@@ -1,6 +1,7 @@
 # IVEE - a Powerful Programable RPN Calculator based on FORTH
 
-  Version 1.0, (c) 2020 by deetee/zooxo   
+  Version 1.0.1, (c) 2025 by Ivko based on the code by deetee/zooxo
+  // Version 1.0, (c) 2020 by deetee/zooxo   
   This software is covered by the 3-clause BSD license.   
   ____________________
 
@@ -8,6 +9,25 @@
 
   See a short video of IVEE at:  https://youtu.be/m1aFRhqvuLM
 
+  ____________________
+
+   IMPORTANT NOTE
+  ____________________
+  Choosing the right display in: // --- Select display controller ---
+   
+  After flashing a new board, be sure to press the keys [F] – [F] – [8]! 
+  This sets the IVEE to base mode and saves a valid value in the EEPROM,
+  so that it does not remain empty. 
+  Afterwards, the small triangle symbol will also appear on the display. :-)
+    
+  Before:
+  .---------------------.                     .---------------------.
+  | B                25 |      Nach           |                     | 
+  | 5                   |   Drücken von       |                     | 
+  |                     |   [F] – [F] – [8]   |>                    | 
+  |_____________________|                     |_____________________|
+
+  
   ____________________
 
    PREAMBLE
