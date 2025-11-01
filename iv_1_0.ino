@@ -4,7 +4,8 @@
   Welcome to Ivee (IV) - A Powerful Programable RPN Calculator based on FORTH
   Version 1.0, (c) 2020 by deetee/zooxo
   This software is covered by the 3-clause BSD license.
-  See also: https://github.com/zooxo/iv and https://youtu.be/m1aFRhqvuLM
+  See also: https://github.com/IvkoPivko/ivee , https://github.com/zooxo/iv 
+  and https://youtu.be/m1aFRhqvuLM
   ____________________
 
   =====================================================================================
@@ -16,10 +17,10 @@
     so that it does not remain empty. 
     Afterwards, the small triangle symbol will also appear on the display. :-)
     
-    Before:
+    Before:                                     After:
     .---------------------.                     .---------------------.
-    | B                25 |      Nach           |                     | 
-    | 5                   |   Drücken von       |                     | 
+    | B                25 |                     |                     | 
+    | 5                   |                     |                     | 
     |                     |   [F] – [F] – [8]   |>                    | 
     |_____________________|                     |_____________________|
   =====================================================================================
