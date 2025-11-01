@@ -31,44 +31,44 @@
 
    PREAMBLE
   ____________________
-
-  Ivee is a powerful programable RPN calculator based on the programming
-  language FORTH. This innovative and powerful machine benefits of a brilliant
-  symbiosis, as both - the RPN calculator and FORTH - are stack based systems.
-  The name Ivee or IV stands for the roman number 4, which was also a basis for
-  naming Forth (4th generation of programming languages).
-
-  Ivee complements a viable set of Forth words (26 commands) with a set of
-  system oriented commands and additional built-in Forth words. In addition
-  the user can define/program new words based on existing words and commands.
-
-  The hardware is simple:
-    - Arduino Pro Micro
-    - OLED display (128x64 pixel) with SSD1306- or SSD1309-controller
-    - 16 keys (push buttons)
-    optional: - LIPO battery
-              - LIPO battery charger (TP4056)
-              - ON/OFF-switch
-
-  Allthough Ivee is operated by 16 keys only it offers a wide range of functions
-  and possibilities:
-  - 120 intrinsic functions based on FORTH
-  - Programming: Handle up to 40 user definable programs
-                 (Edit, New, Rename, Move, Delete, Send, Load)
-  - Dictionary of all commands, words and programs
-  - Fast user definable menu (longpressed F-key)
-  - Calculations with complex numbers for nearly every function
-  - Calculus (f(x), plot, solve, integrate)
-  - Basic math operations in number systems with selectable BASE
-  - Business calculator mode (accuracy of 18 digits)
-  - Save up to 10 numbers/constants permanently
-  - Statistics and line best fit
-  - Many unit conversions
-  - Clock and Torch function
-  - Basic system functions (Battery voltage, Brightness, Screensaver)
-
-  Have fun!
-  deetee
+  
+    Ivee is a powerful programable RPN calculator based on the programming
+    language FORTH. This innovative and powerful machine benefits of a brilliant
+    symbiosis, as both - the RPN calculator and FORTH - are stack based systems.
+    The name Ivee or IV stands for the roman number 4, which was also a basis for
+    naming Forth (4th generation of programming languages).
+  
+    Ivee complements a viable set of Forth words (26 commands) with a set of
+    system oriented commands and additional built-in Forth words. In addition
+    the user can define/program new words based on existing words and commands.
+  
+    The hardware is simple:
+      - Arduino Pro Micro
+      - OLED display (128x64 pixel) with SSD1306-, SSD1309 or SH1106 -controller
+      - 16 keys (push buttons)
+      optional: - LIPO battery
+                - LIPO battery charger (TP4056)
+                - ON/OFF-switch
+  
+    Allthough Ivee is operated by 16 keys only it offers a wide range of functions
+    and possibilities:
+    - 120 intrinsic functions based on FORTH
+    - Programming: Handle up to 40 user definable programs
+                   (Edit, New, Rename, Move, Delete, Send, Load)
+    - Dictionary of all commands, words and programs
+    - Fast user definable menu (longpressed F-key)
+    - Calculations with complex numbers for nearly every function
+    - Calculus (f(x), plot, solve, integrate)
+    - Basic math operations in number systems with selectable BASE
+    - Business calculator mode (accuracy of 18 digits)
+    - Save up to 10 numbers/constants permanently
+    - Statistics and line best fit
+    - Many unit conversions
+    - Clock and Torch function
+    - Basic system functions (Battery voltage, Brightness, Screensaver)
+  
+    Have fun!
+    deetee and Ivko
 
   ____________________
 
@@ -112,37 +112,36 @@
    LIMITS
   ____________________
 
-  As a microprocessor is primarily not made to do such complex things like
-  performing a powerful calculator there are some limits in performance and
-  resources.
-  Most obviously is the limited precision of the intrinsic float format (IEEE
-  754, 32 bit). As four bytes only are used to represent a float respective
-  double number the decimal digits of precision is limited to 6...7. For
-  example calculating sqrt(-1) yields in a display of "7.5E-8 + i" (instead of
-  "0 + i").
-  In addition the resources of a microcontroller are limited like the FLASH
-  memory (holds the executable program code), the RAM memory (holds variables
-  and data while running) and the EEPROM (holds permanent data like settings or
-  user programs).
-  However Ivee tries to offer a maximum of features, comfort and performance
-  with a minimum of required resources.
-
-  LIMITS:   
-```
-    26   ... Maximal data stack size (a...z)
-    7    ... Maximum number of displayed significant digits of a number
-    36   ... Maximum number of decimal exponent digits (1E-37 < X < 1E37)
-    12   ... Maximal size of text display (see EMIT, CTX)
-    10   ... Maximal amount of (complex) numbers saved permanently (0...9)
-    3    ... Maximal number of characters for naming an user program
-    40   ... Maximal number of user programs
-    128  ... Maximal size of an user program (steps)
-    900  ... Maximal size (steps) of all user programs
-    64   ... Maximal size of address stack ("deep of nesting")
-    1E-4 ... X-range of solver (Newton) to determine slope of function
-    10   ... Calculation "stripes" for integrating (Simpson)
-    32   ... Maximal definable command slots of user menu
-```
+    As a microprocessor is primarily not made to do such complex things like
+    performing a powerful calculator there are some limits in performance and
+    resources.
+    Most obviously is the limited precision of the intrinsic float format (IEEE
+    754, 32 bit). As four bytes only are used to represent a float respective
+    double number the decimal digits of precision is limited to 6...7. For
+    example calculating sqrt(-1) yields in a display of "7.5E-8 + i" (instead of
+    "0 + i").
+    In addition the resources of a microcontroller are limited like the FLASH
+    memory (holds the executable program code), the RAM memory (holds variables
+    and data while running) and the EEPROM (holds permanent data like settings or
+    user programs).
+    However Ivee tries to offer a maximum of features, comfort and performance
+    with a minimum of required resources.
+  
+    LIMITS:   
+      26   ... Maximal data stack size (a...z)
+      7    ... Maximum number of displayed significant digits of a number
+      36   ... Maximum number of decimal exponent digits (1E-37 < X < 1E37)
+      12   ... Maximal size of text display (see EMIT, CTX)
+      10   ... Maximal amount of (complex) numbers saved permanently (0...9)
+      3    ... Maximal number of characters for naming an user program
+      40   ... Maximal number of user programs
+      128  ... Maximal size of an user program (steps)
+      900  ... Maximal size (steps) of all user programs
+      64   ... Maximal size of address stack ("deep of nesting")
+      1E-4 ... X-range of solver (Newton) to determine slope of function
+      10   ... Calculation "stripes" for integrating (Simpson)
+      32   ... Maximal definable command slots of user menu
+      
   ____________________
 
    BROWSING MENUS
@@ -427,27 +426,29 @@
    CIRCUIT DIAGRAM
   ____________________
 
-           _________________________________
-          | OLED-DISPLAY 128x64 SPI SSD1309 |
-          |____GND_VCC_SCL_SDA_RES_DC_CS____|
-                |   |   |   |   |   |   |
-       _________|___|___|___|___|___|___|________
-      |        GND VCC 15  16  A1  A2  GND       |
-      |                        19  20            |
-      |                        PF6 PF5           |
-      |                                          |
-      |            ARDUINO PRO MICRO             |
-      |                                          |
-      |__GND__2___8___3___0___1___5___7___6___9__|
-          |   |   |   |   |   |   |   |   |   |
-          |   |   |   |   |   |   |   |   |   |
-          |   F   |   7---8---9---+   |   |   |
-          |___|   |   |   |   |       |   |   |      4x4 Keyboard
-                  E---4---5---6-------+   |   |   (F-key on interuptable
-                  |   |   |   |           |   |  pin to enable sleep mode)
-                  N---1---2---3-----------+   |
-                  |   |   |   |               |
-                  X---0---.---#---------------+
+           ___________________________________
+           | OLED-DISPLAY 128x64 SPI SSD1309 |
+           |____GND_VCC_SCL_SDA_RES_.DC_.CS__|
+                 |   |   |   |   |   |   |
+        _________|___|___|___|___|___|___|________
+        |        GND VCC 15  16  A1  A2  GND       |
+        |                        19  20            |
+        |                        PF6 PF5           |
+        |                                          |
+        |            ARDUINO PRO MICRO             |
+        |                                          |
+        |__GND__2___3___4___5___6___7___8___9__10__|
+            |   |   |   |   |   |   |   |   |   |
+            |   |   |   |   |   |   |   |   |   |
+            |   F   |   7---8---9---+   |   |   | . 1
+            |___|   |   |   |   |       |   |   |              4x4-Keyboard
+                    E---4---5---6-------+   |   | . 2   (Тhe F key on the interrupt pin
+                    |   |   |   |           |   |       to activate sleep mode)
+                    N---1---2---3-----------+   | . 3
+                    |   |   |   |               |
+                    X---0---.---#---------------+ . 4
+                    .   .   .   .
+                    A   B   C   D
 
       (with LIPO-Battery):
 
