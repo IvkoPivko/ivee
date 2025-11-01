@@ -7,6 +7,24 @@
   See also: https://github.com/zooxo/iv and https://youtu.be/m1aFRhqvuLM
   ____________________
 
+  =====================================================================================
+    WICHTIGER HINWEIS:
+    Nach dem Flashen eines neuen Boards unbedingt die Tasten [F] – [F] – [8] drücken!
+    Damit wird der IVEE in den Base-Mode gesetzt und ein gültiger Wert im EEPROM
+    gespeichert, sodass dieser nicht leer bleibt.
+    Danach erscheint auch das kleine Dreieck-Symbol auf dem Display. :-)
+
+    Vorher:
+    .---------------------.                     .---------------------.
+    | B                25 |      Nach           |                     | 
+    | 5                   |   Drücken von       |                     | 
+    |                     |   [F] – [F] – [8]   |>                    | 
+    |_____________________|                     |_____________________|
+  =====================================================================================
+
+
+
+
   ____________________
 
    PREAMBLE
@@ -538,6 +556,9 @@
 #include <avr/sleep.h> // Needed for sleeping
 #include <EEPROM.h> // For saving data to EEPROM
 
+// --- Display-Controller auswählen ---
+//#define DISPLAY_SSD1309   // 1.54" (SSD1306- or SSD1309-controller)
+#define DISPLAY_SH1106      // 1.3" (SH1106-controller)
 
 // ***** F O N T S
 #define FONT4 4
@@ -677,7 +698,6 @@ const byte font4 [] PROGMEM = {
   0x55, 0x2a, 0x55, 0x2a  // del grey rectangle
 };
 
-
 // *****  D I S P L A Y
 
 // DEFINES
@@ -688,18 +708,26 @@ const byte font4 [] PROGMEM = {
 // Display
 #define CS_PORT PORTD   // CS port
 #define CS_BIT PORTD6   // CS physical bit number
+
 #define PIN_DC 20       // DC pin number
 #define DC_PORT PORTF   // DC port
 #define DC_BIT PORTF5   // DC physical bit number
+#define DC_DDR DDRF     // Important Ivko !
+
 #define PIN_RST 19       // RST pin number
 #define RST_PORT PORTF  // RST port
 #define RST_BIT PORTF6  // RST physical bit number
+#define RST_DDR DDRF    // Important Ivko !
+
 #define SPI_MISO_PORT PORTB
 #define SPI_MISO_BIT PORTB3
+
 #define SPI_MOSI_PORT PORTB
 #define SPI_MOSI_BIT PORTB2
+
 #define SPI_SCK_PORT PORTB
 #define SPI_SCK_BIT PORTB1
+
 #define SPI_SS_PORT PORTB
 #define SPI_SS_BIT PORTB0
 
@@ -718,19 +746,26 @@ void SPItransfer(byte data) { // Write to the SPI bus (MOSI pin)
   while (!(SPSR & _BV(SPIF))) {} // Wait for byte to be sent
 }
 
+/*/
 static void ScreenCommandMode(void) { // Set screen to command mode
   bitClear(DC_PORT, DC_BIT);
 }
 
 static void ScreenDataMode(void) { // Set screen to data mode
   bitSet(DC_PORT, DC_BIT);
-}
+}//*/
+
+#define ScreenCommandMode() bitClear(DC_PORT, DC_BIT)
+#define ScreenDataMode()    bitSet(DC_PORT, DC_BIT)
 
 static void bootpins(void) { // Declare and boot port pins
   DDRB  |= _BV(SPI_MOSI_BIT) | _BV(SPI_SCK_BIT) | _BV(SPI_SS_BIT);
   PORTD |= _BV(CS_BIT); // Port D
   PORTD &= ~(_BV(RST_BIT));
   DDRD  |= _BV(RST_BIT) | _BV(CS_BIT) | _BV(DC_BIT);
+
+  DC_DDR |= _BV(DC_BIT);  // DC as output (ivko) – Important for SSD1309 1.54 inch
+  RST_DDR |= _BV(RST_BIT); // RST as output (ivko) – Important for SSD1309 1.54 inch
 }
 
 static void bootSPI(void) { // Initialize the SPI interface for the display
@@ -738,26 +773,34 @@ static void bootSPI(void) { // Initialize the SPI interface for the display
   SPSR = _BV(SPI2X);
 }
 
-const byte PROGMEM ScreenBootProgram[] = { // SSD1306 boot sequence
-  // 0xAE, // Display Off
-  0xD5, 0xF0, // Set Display Clock Divisor v = 0xF0 - default is 0x80
-  // 0xA8, 0x3F, // Set Multiplex Ratio v = 0x3F
-  // 0xD3, 0x00, // Set Display Offset v = 0
-  // 0x40, // Set Start Line (0)
-  0x8D, 0x14, // Charge Pump Setting v = enable (0x14) - default is disabled
-  0xA1, // Set Segment Re-map (A0) | (b0001) - default is (b0000)
-  0xC8, // Set COM Output Scan Direction
-  // 0xDA, 0x12, // Set COM Pins v
-  //0x81, 0xCF, // Set Contrast v = 0xCF
-  //0x81, 0x00, // Set Contrast v = 0x00
-  0xD9, 0xF1, // Set Precharge = 0xF1
-  // 0xDB, 0x40, // Set VCom Detect
-  // 0xA4, // Entire Display ON
-  // 0xA6, // Set normal/inverse display
-  0xAF, // Display On
-  0x20, 0x00, // Set display mode = horizontal addressing mode (0x00)
-  0x21, 0x00, 0x7f, // Set col address range ... needed for SSD1309 controller
-  0x22, 0x00, 0x07 // Set page address range ... needed for SSD1309 controller
+const byte PROGMEM ScreenBootProgram[] = {
+#ifdef DISPLAY_SH1106
+  // ---- SH1106 (132 RAM cols, 128 visible) ----
+  0xAE,             // Display OFF
+//  0xD5, 0x80,       // Clock (safe default)
+  0xA8, 0x3F,       // Multiplex 1/64
+  0xD3, 0x00,       // Display offset = 0
+  0x40,             // Start line = 0
+  0xA1,             // SEG remap (if needed 0xA0)
+  0xC8,             // COM scan dir (if needed 0xC0)
+  0xAD, 0x8B,       // DC-DC ON 
+  0xDA, 0x12,       // COM pins
+  0xA4,             // RAM → Display
+  0xA6,             // Normal
+  0xAF              // Display ON
+  // (no 0x20/0x21/0x22 page addressing in display())
+#else
+  // ---- SSD1309 (proven settings) ----
+  0xD5, 0xF0,         // Clock
+  0x8D, 0x14,         // Charge Pump (SSD1306/1309)
+  0xA1,               // SEG remap
+  0xC8,               // COM scan dir
+  0xD9, 0xF1,         // Precharge
+  0xAF,               // Display ON
+  0x20, 0x00,         // Addressing: horizontal
+  0x21, 0x00, 0x7F,   // Column range 0..127
+  0x22, 0x00, 0x07    // Page   range 0..7
+#endif
 };
 
 static void bootscreen(void) { // Boot screen - reset the display
@@ -789,7 +832,8 @@ static void screenon(void) { // Restart display after screenoff
 // ***** K E Y B O A R D
 
 // PINS
-#define KEYBOARDCOL1 10 // IV BIG
+/*// IV BIG             // zooxo Belegung
+  #define KEYBOARDCOL1 10 
   #define KEYBOARDCOL2 3
   #define KEYBOARDCOL3 0
   #define KEYBOARDCOL4 1
@@ -798,15 +842,27 @@ static void screenon(void) { // Restart display after screenoff
   #define KEYBOARDROW3 8
   #define KEYBOARDROW4 9
 
-/*/
-#define KEYBOARDCOL1 8 // IV TINY
+// IV TINY            // zooxo Belegung
+#define KEYBOARDCOL1 8 
 #define KEYBOARDCOL2 3
 #define KEYBOARDCOL3 0
 #define KEYBOARDCOL4 1
 #define KEYBOARDROW1 5
 #define KEYBOARDROW2 7
 #define KEYBOARDROW3 6
-#define KEYBOARDROW4 9//*/
+#define KEYBOARDROW4 9
+//*/
+
+// /* // IVEE Ivko's Belegung
+#define KEYBOARDCOL1 3   // ColA -> PIN3
+#define KEYBOARDCOL2 4   // ColB -> PIN4
+#define KEYBOARDCOL3 5   // ColC -> PIN5
+#define KEYBOARDCOL4 6   // ColD -> PIN6
+#define KEYBOARDROW1 7   // Row1 -> PIN7
+#define KEYBOARDROW2 8   // Row2 -> PIN8
+#define KEYBOARDROW3 9   // Row3 -> PIN9
+#define KEYBOARDROW4 10  // Row4 -> PIN10
+//*/
 
 // DEFINES
 #define MAGICKEYPIN 2 // Pin of magic key
@@ -881,6 +937,7 @@ static void dbuffill(byte n) { // Fill display buffer with pattern
   memset(dbuf, n, SCREENBYTES);
 }
 
+/*/
 static void display(void) { // Print display buffer (64x32) to real screen (128x64)
   for (byte l = 0; l < MAXLIN; l++) { // Four lines
     for (byte k = 0; k < 2; k++) { // Two nibbles (double height)
@@ -890,7 +947,43 @@ static void display(void) { // Print display buffer (64x32) to real screen (128x
       }
     }
   }
+} /*/
+
+///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+static void display(void) { // 64x32 (virt.) → 128x64 (real)
+#ifdef DISPLAY_SH1106
+  // SH1106: 8 Pages, Column-Offset +2
+  for (byte l = 0; l < MAXLIN; l++) {
+    for (byte k = 0; k < 2; k++) {
+      byte page = (byte)(l * 2 + k);               // 0..7
+      ScreenCommandMode();
+      SPItransfer(0xB0 | (page & 0x07));           // Set Page
+      SPItransfer(0x10 | ((2) >> 4));              // Column high (x=0 → 2)
+      SPItransfer(0x00 | ((2) & 0x0F));            // Column low
+      ScreenDataMode();
+
+      for (byte j = 0; j < SCREENWIDTH; j++) {
+        byte tmp = expand4bit((dbuf[j + l * SCREENWIDTH] >> (k * 4)) & 0x0F);
+        SPItransfer(tmp); SPItransfer(tmp);        // 2× → 128 Breite
+      }
+    }
+  }
+#else
+  // SSD1309: horizontal addressing (bewährt)
+  for (byte l = 0; l < MAXLIN; l++) {
+    for (byte k = 0; k < 2; k++) {
+      for (byte j = 0; j < SCREENWIDTH; j++) {
+        byte tmp = expand4bit((dbuf[j + l * SCREENWIDTH] >> (k * 4)) & 0x0F);
+        SPItransfer(tmp); SPItransfer(tmp);
+      }
+    }
+  }
+#endif
 }
+///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
 
 static void setframerate(byte rate) { // Calculate frameduration
   eachframemillis = 1000 / rate;
@@ -2785,10 +2878,23 @@ void loop() {
               select = 0;
               issetusr = false; ismenu = ismenusetusr = true;
             }
+// =================================================================================================================
+// =================================================================================================================
+// =================================================================================================================
+            /* // ORIGINAL ZOOXO 
             else if (isprgdict) { // Go back to prgedit
               prgstepins(tmp);
               isprgdict = false; isprgedit = true;
+            } // */
+              
+            // Korektur Ivko + AI
+            else if (isprgdict) { // Insert chosen command into program
+              prgstepins(cmdsort[tmp]);  // <-- korrekt: gemappten Befehls-Code einfügen
+              isprgdict = false; isprgedit = true;
             }
+// =================================================================================================================
+// =================================================================================================================
+// =================================================================================================================         
             else { // Execute command directly
               execute(cmdsort[tmp]); // Execute dict choice
               isnewnumber = true;
