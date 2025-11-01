@@ -19,10 +19,10 @@
     so that it does not remain empty. 
     Afterwards, the small triangle symbol will also appear on the display. :-)
       
-    Before:
+    Before:                                      After:
     .---------------------.                     .---------------------.
-    | B                25 |      Nach           |                     | 
-    | 5                   |   Drücken von       |                     | 
+    | B                25 |                     |                     | 
+    | 5                   |                     |                     | 
     |                     |   [F] – [F] – [8]   |>                    | 
     |_____________________|                     |_____________________|
 
