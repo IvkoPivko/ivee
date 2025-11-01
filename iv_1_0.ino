@@ -8,13 +8,15 @@
   ____________________
 
   =====================================================================================
-    WICHTIGER HINWEIS:
-    Nach dem Flashen eines neuen Boards unbedingt die Tasten [F] – [F] – [8] drücken!
-    Damit wird der IVEE in den Base-Mode gesetzt und ein gültiger Wert im EEPROM
-    gespeichert, sodass dieser nicht leer bleibt.
-    Danach erscheint auch das kleine Dreieck-Symbol auf dem Display. :-)
-
-    Vorher:
+    IMPORTANT NOTE:
+    Choosing the right display in: // --- Select display controller ---
+    
+    After flashing a new board, be sure to press the keys [F] – [F] – [8]! 
+    This sets the IVEE to base mode and saves a valid value in the EEPROM,
+    so that it does not remain empty. 
+    Afterwards, the small triangle symbol will also appear on the display. :-)
+    
+    Before:
     .---------------------.                     .---------------------.
     | B                25 |      Nach           |                     | 
     | 5                   |   Drücken von       |                     | 
@@ -42,7 +44,7 @@
 
   The hardware is simple:
     - Arduino Pro Micro
-    - OLED display (128x64 pixel) with SSD1306- or SSD1309-controller
+    - OLED display (128x64 pixel) with SSD1306-, SSD1309 or SH1106 -controller
     - 16 keys (push buttons)
     optional: - LIPO battery
               - LIPO battery charger (TP4056)
@@ -435,19 +437,18 @@
         |                                          |
         |            ARDUINO PRO MICRO             |
         |                                          |
-        |__GND__2___8___3___0___1___5___7___6___9__|
+        |__GND__2___3___4___5___6___7___8___9__10__|
             |   |   |   |   |   |   |   |   |   |
             |   |   |   |   |   |   |   |   |   |
             |   F   |   7---8---9---+   |   |   | . 1
-            |___|   |   |   |   |       |   |   |              4x4-Tastatur
-                    E---4---5---6-------+   |   | . 2    (F-Taste an Interrupt-Pin,
-                    |   |   |   |           |   |      um den Ruhemodus zu aktivieren)
+            |___|   |   |   |   |       |   |   |              4x4-Keyboard
+                    E---4---5---6-------+   |   | . 2   (Тhe F key on the interrupt pin
+                    |   |   |   |           |   |       to activate sleep mode)
                     N---1---2---3-----------+   | . 3
                     |   |   |   |               |
                     X---0---.---#---------------+ . 4
                     .   .   .   .
                     A   B   C   D
-                    
 
       (with LIPO-Battery):
 
@@ -556,7 +557,7 @@
 #include <avr/sleep.h> // Needed for sleeping
 #include <EEPROM.h> // For saving data to EEPROM
 
-// --- Display-Controller auswählen ---
+// --- Select display controller ---
 //#define DISPLAY_SSD1309   // 1.54" (SSD1306- or SSD1309-controller)
 #define DISPLAY_SH1106      // 1.3" (SH1106-controller)
 
