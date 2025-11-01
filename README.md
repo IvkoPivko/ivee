@@ -1,7 +1,6 @@
 # IVEE - a Powerful Programable RPN Calculator based on FORTH
 
-  Version 1.0.1, (c) 2025 by Ivko based on the code by deetee/zooxo
-   // Version 1.0, (c) 2020 by deetee/zooxo   
+  Version 1.0.1, (c) 2025 by Ivko based on the code by deetee/zooxo.   
   This software is covered by the 3-clause BSD license.   
   ____________________
 
