@@ -4,7 +4,7 @@
   This software is covered by the 3-clause BSD license.   
   ____________________
 
-  | <!-- -->      | <!-- -->      |
+  | Make by deetee/zooxo  | Make by Ivko |
   |:------------- | -------------:|
   | ![zooxo Version](https://user-images.githubusercontent.com/16148023/94920040-ca074d80-04b5-11eb-8cec-c0d62ee9ae49.jpg) | ![Ivkos 1.3 Inch Version](https://github.com/IvkoPivko/ivee/blob/8f18ccfdc46d2436b682c9be947c2ea44cfd7c23/Images%20and%20CADs/02%2B03.jpg) |
 
