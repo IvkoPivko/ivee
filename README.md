@@ -1,4 +1,4 @@
-# IVEE - a Powerful Programable RPN Calculator based on FORTH
+# IVEE - a Powerful Programmable RPN Calculator based on FORTH
 
   Version 1.0.1, (c) 2025 by Ivko based on the code by deetee/zooxo.   
   This software is covered by the 3-clause BSD license.   
@@ -6,7 +6,7 @@
   ## IVEE – My version with custom improvements
   
   This is my customized version of the **IVEE RPN Calculator** project.  
-  With the help of a friendly AI companion, known to most as *ChatGPT*,  
+  With the help of a friendly AI companion — known to most as ChatGPT.  
   I’ve made a few code improvements, added hardware flexibility, and included extra design files.
   
   ---
@@ -42,7 +42,7 @@
   
   ____________________
 
-  | Make by deetee/zooxo  | Make by Ivko |
+  | Made by deetee/zooxo  | Made by Ivko |
   |:------------- | -------------:|
   | ![zooxo Version](https://user-images.githubusercontent.com/16148023/94920040-ca074d80-04b5-11eb-8cec-c0d62ee9ae49.jpg) | ![Ivkos 1.3 Inch Version](https://github.com/IvkoPivko/ivee/blob/8f18ccfdc46d2436b682c9be947c2ea44cfd7c23/Images%20and%20CADs/02%2B03.jpg) |
 
