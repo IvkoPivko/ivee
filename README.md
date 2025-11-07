@@ -2,6 +2,44 @@
 
   Version 1.0.1, (c) 2025 by Ivko based on the code by deetee/zooxo.   
   This software is covered by the 3-clause BSD license.   
+
+  ## IVEE – My version with custom improvements
+  
+  This is my customized version of the **IVEE RPN Calculator** project.  
+  With the help of a friendly AI companion, known to most as *ChatGPT*,  
+  I’ve made a few code improvements, added hardware flexibility, and included extra design files.
+  
+  ---
+  
+  ### 🧠 Code Modifications
+  1. **Improved DICT command handling**  
+     – Fixed an issue where certain dictionary/program mode commands were not executed correctly.  
+  
+  2. **Added SH1106 display support**  
+     – For 1.3" OLED modules.  
+     – Simply comment/uncomment the appropriate display section (`#define DISPLAY_SSD1309` / `#define DISPLAY_SH1106`) at the top of the code.  
+  
+  3. **Additional inline comments**  
+     – To make the code easier to read and understand.
+  
+  ---
+  
+  ### 🧩 Hardware Add-ons
+  4. **STEP file for 3D-printed cases**  
+     – Compatible with both **1.54" (SSD1309)** and **1.3" (SH1106)** display versions.  
+  
+  5. **SVG keypad layout**  
+     – Vector-based reference for button mapping and labeling.
+  
+  ---
+  
+  ### 🧰 Notes
+  - The code remains fully compatible with the original IVEE structure.  
+  - Tested on an ATmega32U4 board with both SSD1309 and SH1106 displays.  
+  - The SH1106 mode uses a small memory-optimized page addressing fix (<10 bytes overhead).
+  
+  ---
+  
   ____________________
 
   | Make by deetee/zooxo  | Make by Ivko |
